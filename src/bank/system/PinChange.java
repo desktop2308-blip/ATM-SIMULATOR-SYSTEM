@@ -6,11 +6,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PinChange extends JFrame implements ActionListener {
-    String pinnumber;
+    String cardnumber,pinnumber;
     JButton change,back;
     JPasswordField pin,repin;
-    PinChange(String pinnumber){
-        this.pinnumber=pinnumber;
+    PinChange(String pinnumber,String cardnumber){
+        this.cardnumber=cardnumber;
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/atm.jpg"));
         Image i2=i1.getImage().getScaledInstance(900,900,0);
         ImageIcon i3 = new ImageIcon(i2);
@@ -81,9 +81,9 @@ public class PinChange extends JFrame implements ActionListener {
                 return;
             }
             Conn conn = new Conn();
-            String query1 = "update bank set pin =  '"+rpin+"' where pin = '"+pinnumber+"'";
-            String query2 = "update login set pin = '"+rpin+"' where pin = '"+pinnumber+"'";
-            String query3 = "update signupthree set pin = '"+rpin+"' where pin = '"+pinnumber+"'";
+            String query1 = "update bank set pin =  '"+rpin+"' where cardnumber = '"+cardnumber+"'";
+            String query2 = "update login set pin = '"+rpin+"' where cardnumber = '"+cardnumber+"'";
+            String query3 = "update signupthree set pin = '"+rpin+"' where cardnumber = '"+cardnumber+"'";
             
             conn.s.executeUpdate(query1);
             conn.s.executeUpdate(query2);
@@ -92,17 +92,17 @@ public class PinChange extends JFrame implements ActionListener {
              JOptionPane.showMessageDialog(null,"PIN changed successfully");
              
              setVisible(false);
-             new Transactions(rpin).setVisible(true);
+             new Transactions(rpin,cardnumber).setVisible(true);
             }catch(Exception e){
                 System.out.println(e);
             }
         }else{
             setVisible(false);
-            new Transactions(pinnumber).setVisible(true);
+            new Transactions(pinnumber,cardnumber).setVisible(true);
         }
         
     }
     public static void main(String args[]){
-        new PinChange("").setVisible(true);
+        new PinChange("","").setVisible(true);
     }
 }

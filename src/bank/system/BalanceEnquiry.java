@@ -7,11 +7,11 @@ import java.awt.event.*;
 import java.sql.*;
 
 public class BalanceEnquiry extends JFrame implements ActionListener{
-    String pinnumber;
+    String cardnumber,pinnumber;
     JButton back;
-    BalanceEnquiry(String pinnumber){
+    BalanceEnquiry(String pinnumber,String cardnumber){
         setLayout(null);
-        this.pinnumber = pinnumber;
+        this.cardnumber = cardnumber;
         
         
         
@@ -31,7 +31,7 @@ public class BalanceEnquiry extends JFrame implements ActionListener{
         Conn c = new Conn();
         int balance = 0; 
         try{
-            ResultSet rs = c.s.executeQuery("select * from bank where pin = '"+pinnumber+"'");
+            ResultSet rs = c.s.executeQuery("select * from bank where cardnumber = '"+cardnumber+"'");
             
             while(rs.next()){
                 if(rs.getString("type").equals("Deposit")){
@@ -58,9 +58,9 @@ public class BalanceEnquiry extends JFrame implements ActionListener{
     }
     public void actionPerformed(ActionEvent ae){
         setVisible(false);
-        new Transactions(pinnumber).setVisible(true);
+        new Transactions(pinnumber,cardnumber).setVisible(true);
     }
     public static void main(String args[]){
-        new BalanceEnquiry("").setVisible(true);
+        new BalanceEnquiry("","").setVisible(true);
     }
 }

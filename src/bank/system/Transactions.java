@@ -6,9 +6,9 @@ import java.awt.event.*;
 
 public class Transactions extends JFrame implements ActionListener{
     JButton deposit,withdrawl,pinchange,mini,fastCash,balance,exit;
-    String pinnumber;
-     Transactions(String pinnumber){
-         this.pinnumber=pinnumber;
+    String cardnumber,pinnumber;
+     Transactions(String pinnumber,String cardnumber){
+         this.cardnumber=cardnumber;
          setLayout(null);
          
          ImageIcon i1=new ImageIcon(ClassLoader.getSystemResource("icons/atm.jpg"));
@@ -71,24 +71,24 @@ public class Transactions extends JFrame implements ActionListener{
              System.exit(0);
          }else if(ae.getSource() == deposit){
              setVisible(false);
-             new Deposit(pinnumber).setVisible(true);
+             new Deposit(pinnumber,cardnumber).setVisible(true);
          }else if(ae.getSource() == withdrawl){
              setVisible(false);
-             new Withdrawl(pinnumber).setVisible(true);
+             new Withdrawl(pinnumber,cardnumber).setVisible(true);
          }else if(ae.getSource() == fastCash){
              setVisible(false);
-             new FastCash(pinnumber).setVisible(true);
+             new FastCash(pinnumber,cardnumber).setVisible(true);
          }else if(ae.getSource() == pinchange){
              setVisible(false);
-             new PinChange(pinnumber).setVisible(true);
+             new PinChange(pinnumber,cardnumber).setVisible(true);
          }else if(ae.getSource() == balance){
              setVisible(false);
-             new BalanceEnquiry(pinnumber).setVisible(true);
+             new BalanceEnquiry(pinnumber,cardnumber).setVisible(true);
          }else if(ae.getSource() == mini){
-             new MiniStatement(pinnumber).setVisible(true);
+             new MiniStatement(cardnumber).setVisible(true);
          }
      }
      public static void main(String args[]){
-         new Transactions("");
+         new Transactions("","");
      }
 }

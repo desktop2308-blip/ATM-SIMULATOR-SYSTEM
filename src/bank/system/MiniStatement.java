@@ -6,8 +6,8 @@ import java.awt.*;
 import java.sql.*;
 
 public class MiniStatement extends JFrame {
-    String pinnumber;
-    MiniStatement(String pinnumber){
+    String cardnumber;
+    MiniStatement(String cardnumber){
         setLayout(null);
         
         JLabel mini = new JLabel();
@@ -28,7 +28,7 @@ public class MiniStatement extends JFrame {
         
         try{
             Conn conn = new Conn();
-            ResultSet rs = conn.s.executeQuery("select * from login where pin ='"+pinnumber+"'");
+            ResultSet rs = conn.s.executeQuery("select * from login where cardnumber ='"+cardnumber+"'");
             while(rs.next()){
                 card.setText("Card Number:- "+rs.getString("cardnumber").substring(0,4) + "XXXXXXXX" + rs.getString("cardnumber").substring(12));
                 
@@ -39,7 +39,7 @@ public class MiniStatement extends JFrame {
         try{
             Conn conn = new Conn();
             int bal = 0;
-            ResultSet rs = conn.s.executeQuery("select * from bank where pin = '"+pinnumber+"'");
+            ResultSet rs = conn.s.executeQuery("select * from bank where cardnumber = '"+cardnumber+"'");
             while(rs.next()){
                 mini.setText(mini.getText() + "<html>" + rs.getString("date") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + rs.getString("type") + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" + rs.getString("amount") + "<br><br><html>");
                 if(rs.getString("type").equals("Deposit")){

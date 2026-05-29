@@ -4,16 +4,18 @@ package bank.system;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.sql.*;
+import java.util.Date;
 
 
 
 public class Withdrawl extends JFrame implements ActionListener {
     JButton withdraw,back;
     JTextField amount;
-    String pinnumber;
-    Withdrawl(String pinnumber){
+    String cardnumber,pinnumber;
+    Withdrawl(String pinnumber,String cardnumber){
         
+        this.cardnumber=cardnumber;
         this.pinnumber=pinnumber;
         
         setLayout(null);
@@ -58,11 +60,28 @@ public class Withdrawl extends JFrame implements ActionListener {
             }else{
                 try{
                     Conn conn = new Conn();
-                    String query="insert into bank values('"+pinnumber+"', '"+date+"', 'Withdrawl', '"+number+"')";
-                    conn.s.executeUpdate(query);
-                    JOptionPane.showMessageDialog(null,"Rs "+number+" Withdraw Successfully");  
-                    setVisible(false);
-                    new Transactions(pinnumber).setVisible(true);
+                    int balance = 0; 
+                    ResultSet rs = conn.s.executeQuery("select * from bank where cardnumber = '"+cardnumber+"'");
+            
+                    while(rs.next()){
+                        if(rs.getString("type").equals("Deposit")){
+                            balance += Integer.parseInt(rs.getString("amount"));
+                        }else{
+                            balance -= Integer.parseInt(rs.getString("amount"));
+                        }
+                    }
+                    if(balance>=Integer.parseInt(number)){
+                        String query="insert into bank values('"+cardnumber+"','"+pinnumber+"', '"+date+"', 'Withdrawl', '"+number+"')";
+                        conn.s.executeUpdate(query);
+                        JOptionPane.showMessageDialog(null,"Rs "+number+" Withdraw Successfully");  
+                        setVisible(false);
+                        new Transactions(pinnumber,cardnumber).setVisible(true);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null,"Insufficient Balance");
+                        setVisible(false);
+                        new Transactions(pinnumber,cardnumber).setVisible(true);
+                    }
                 }
                 catch(Exception e){
                     System.out.println(e);
@@ -70,12 +89,12 @@ public class Withdrawl extends JFrame implements ActionListener {
             }
         }else if(ae.getSource() == back){
             setVisible(false);
-            new Transactions(pinnumber).setVisible(true);
+            new Transactions(pinnumber,cardnumber).setVisible(true);
         }
     }
     
     
     public static void main(String args[]){
-        new Withdrawl("");
+        new Withdrawl("","");
     }
 }

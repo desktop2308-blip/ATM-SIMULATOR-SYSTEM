@@ -11,9 +11,10 @@ import java.util.*;
 public class Deposit extends JFrame implements ActionListener {
     JButton deposit,back;
     JTextField amount;
-    String pinnumber;
-    Deposit(String pinnumber){
+    String cardnumber,pinnumber;
+    Deposit(String pinnumber,String cardnumber){
         
+        this.cardnumber=cardnumber;
         this.pinnumber=pinnumber;
         
         setLayout(null);
@@ -58,11 +59,12 @@ public class Deposit extends JFrame implements ActionListener {
             }else{
                 try{
                     Conn conn = new Conn();
-                    String query="insert into bank values('"+pinnumber+"', '"+date+"', 'Deposit', '"+number+"')";
+                    String query="insert into bank values('"+cardnumber+"', '"+pinnumber+"', '"+date+"', 'Deposit', '"+number+"')";
+                    //System.out.println("insert into bank values('"+cardnumber+"', '"+pinnumber+"', '"+date+"', 'Deposit', '"+number+"')");  
                     conn.s.executeUpdate(query);
                     JOptionPane.showMessageDialog(null,"Rs "+number+" Deposited Successfully");  
                     setVisible(false);
-                    new Transactions(pinnumber).setVisible(true);
+                    new Transactions(pinnumber,cardnumber).setVisible(true);
                 }
                 catch(Exception e){
                     System.out.println(e);
@@ -70,12 +72,12 @@ public class Deposit extends JFrame implements ActionListener {
             }
         }else if(ae.getSource() == back){
             setVisible(false);
-            new Transactions(pinnumber).setVisible(true);
+            new Transactions(pinnumber,cardnumber).setVisible(true);
         }
     }
     
     
     public static void main(String args[]){
-        new Deposit("");
+        new Deposit("","");
     }
 }
